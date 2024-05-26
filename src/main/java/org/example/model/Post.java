@@ -31,9 +31,14 @@ public class Post {
     @Column(name = "updated")
     private LocalDateTime updated;
 
-    @ManyToMany
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "label_post",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
     private List<Label> labels;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 }

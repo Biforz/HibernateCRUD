@@ -4,6 +4,7 @@ import org.example.controller.PostController;
 import org.example.model.Post;
 import org.example.model.status.PostStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,19 +35,24 @@ public class PostView {
         System.out.print("Введите content: ");
         String content = scanner.nextLine();
         post.setContent(content);
+        post.setCreated(LocalDateTime.now());
+        post.setUpdated(LocalDateTime.now());
         post.setPostStatus(PostStatus.ACTIVE);
+
         postController.addNewPost(post);
     }
 
     public void updatePostById() {
-        Post post = new Post();
         System.out.print("Введите id для редактирования: ");
         Long numberId = scanner.nextLong();
+        Post post = postController.getPostById(numberId);
         scanner.nextLine();
         System.out.print("Введите content: ");
         String newContent = scanner.nextLine();
+        post.setId(numberId);
         post.setContent(newContent);
         post.setCreated(post.getCreated());
+        post.setUpdated(LocalDateTime.now());
         post.setPostStatus(PostStatus.UNDER_REVIEW);
         postController.updatedPostBuId(numberId, post);
     }

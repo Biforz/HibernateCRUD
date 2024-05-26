@@ -74,3 +74,5 @@ insert into writer_post(writer_id, posts_id) VALUES (1, 1);
 insert into writer_post(writer_id, posts_id) VALUES (2, 2);
 insert into writer_post(writer_id, posts_id) VALUES (3, 3);
 insert into writer_post(writer_id, posts_id) VALUES (4, 4);
+
+select * from post;

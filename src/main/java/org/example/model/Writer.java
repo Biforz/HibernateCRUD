@@ -26,6 +26,9 @@ public class Writer {
     @Column(name = "lastname")
     private String lastName;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "writer_post",
+            joinColumns = @JoinColumn(name = "writer_id"),
+            inverseJoinColumns = @JoinColumn(name = "posts_id"))
     private List<Post> posts;
 }

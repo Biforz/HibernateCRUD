@@ -5,7 +5,9 @@ import org.example.model.Label;
 import org.example.repository.LabelRepository;
 import org.hibernate.Session;
 
+import javax.persistence.Query;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class HibernateLabelRepositoryImpl implements LabelRepository {
     @Override
@@ -20,7 +22,7 @@ public class HibernateLabelRepositoryImpl implements LabelRepository {
         try (Session session = HibernateSessionFactory.session()) {
             Label label = session.get(Label.class, id);
             if (label == null) {
-                throw new IllegalArgumentException("id не найден");
+                throw new NoSuchElementException("id не найден");
             }
             return label;
         }
@@ -39,10 +41,6 @@ public class HibernateLabelRepositoryImpl implements LabelRepository {
     @Override
     public Label update(Long id, Label label) {
         try (Session session = HibernateSessionFactory.session()) {
-            label = Label.builder()
-                    .id(id)
-                    .name(label.getName())
-                    .build();
             session.beginTransaction();
             session.saveOrUpdate(label);
             session.getTransaction().commit();
@@ -53,22 +51,16 @@ public class HibernateLabelRepositoryImpl implements LabelRepository {
     @Override
     public void deleteById(Long id) {
         try (Session session = HibernateSessionFactory.session()) {
-//            session.beginTransaction();
-//            Label label;
-//            label = session.find(Label.class, id);
-//            session.createQuery("delete from Label where id = :id")
-//                            .setParameter("id", label.getId())
-//                            .executeUpdate();
-//            session.beginTransaction().commit();
-
-
-            Label label;
-            label = session.find(Label.class, id);
             session.beginTransaction();
-            session.remove(label);
-            session.flush();
-            session.clear();
-            session.beginTransaction().commit();
+            Label getLabelById = session.get(Label.class, id);
+            if (getLabelById != null) {
+                Query query = session.createQuery("DELETE FROM Label WHERE id = :id");
+                query.setParameter("id", id);
+                query.executeUpdate();
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
