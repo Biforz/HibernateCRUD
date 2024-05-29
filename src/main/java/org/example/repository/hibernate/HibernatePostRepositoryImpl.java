@@ -12,7 +12,7 @@ public class HibernatePostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> showAll() {
         try (Session session = HibernateSessionFactory.session()) {
-            return session.createQuery("FROM Post p LEFT JOIN FETCH p.labels").getResultList();
+            return session.createQuery("FROM Post p LEFT JOIN FETCH p.labels", Post.class).getResultList();
         }
     }
 
@@ -38,7 +38,7 @@ public class HibernatePostRepositoryImpl implements PostRepository {
     public Post update(Long id, Post post) {
         try (Session session = HibernateSessionFactory.session()) {
             session.beginTransaction();
-            session.update(post);
+            session.merge(post);
             session.getTransaction().commit();
         }
         return post;

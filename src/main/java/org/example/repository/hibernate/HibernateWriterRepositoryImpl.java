@@ -13,42 +13,45 @@ public class HibernateWriterRepositoryImpl implements WriterRepository {
     @Transactional
     public List<Writer> showAll() {
         try (Session session = HibernateSessionFactory.session()) {
-            return session.createQuery("FROM Writer w LEFT JOIN FETCH w.posts").getResultList();
+            return session.createQuery("FROM Writer w LEFT JOIN FETCH w.posts", Writer.class).getResultList();
         }
     }
 
     @Override
     public Writer showById(Long id) {
         try (Session session = HibernateSessionFactory.session()) {
-            Writer writer = session.get(Writer.class, id);
-            return writer;
-//            return session.createQuery("FROM Writer w LEFT JOIN FETCH w.posts WHERE w.posts = :id", Writer.class)
-//                    .setParameter("id", id)
-//                    .getSingleResult();
+            return session.createQuery("FROM Writer w LEFT JOIN FETCH w.posts WHERE w.id = :id", Writer.class)
+                    .setParameter("id", id).getSingleResult();
         }
-//        return null;
     }
 
     @Override
     public Writer add(Writer writer) {
         try (Session session = HibernateSessionFactory.session()) {
-
+            session.beginTransaction();
+            session.save(writer);
+            session.getTransaction().commit();
         }
-        return null;
+        return writer;
     }
 
     @Override
     public Writer update(Long id, Writer writer) {
         try (Session session = HibernateSessionFactory.session()) {
-
+            session.beginTransaction();
+            session.merge(writer);
+            session.getTransaction().commit();
         }
-        return null;
+        return writer;
     }
 
     @Override
     public void deleteById(Long id) {
         try (Session session = HibernateSessionFactory.session()) {
-
+            Writer writer = session.get(Writer.class, id);
+            session.beginTransaction();
+            session.remove(writer);
+            session.getTransaction().commit();
         }
     }
 }
