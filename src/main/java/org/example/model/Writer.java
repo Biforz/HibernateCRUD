@@ -21,12 +21,12 @@ public class Writer {
     private Long id;
 
     @Column(name = "firstname")
-    private String firstName;
+    private String firstname;
 
     @Column(name = "lastname")
-    private String lastName;
+    private String lastname;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "writer_post",
             joinColumns = @JoinColumn(name = "writer_id"),
             inverseJoinColumns = @JoinColumn(name = "posts_id"))

@@ -1,9 +1,6 @@
 package org.example.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.model.status.PostStatus;
 
 import javax.persistence.*;
@@ -31,8 +28,9 @@ public class Post {
     @Column(name = "updated")
     private LocalDateTime updated;
 
-
     @ManyToMany(cascade = CascadeType.ALL)
+
+    @ToString.Exclude
     @JoinTable(name = "label_post",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id"))
