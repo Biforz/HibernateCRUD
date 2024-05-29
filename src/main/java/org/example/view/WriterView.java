@@ -34,22 +34,22 @@ public class WriterView {
         String firstName = scanner.nextLine();
         System.out.print("Введите lastName: ");
         String lastName = scanner.nextLine();
-        writer.setFirstName(firstName);
-        writer.setLastName(lastName);
+        writer.setFirstname(firstName);
+        writer.setLastname(lastName);
         writerController.addNewWriter(writer);
     }
 
     public void updatedWriterById() {
-        Writer writer = new Writer();
         System.out.print("Введите id для редактирования: ");
         Long numberId = scanner.nextLong();
+        Writer writer = writerController.getWriterById(numberId);
         scanner.nextLine();
         System.out.print("Введите firstName: ");
-        String firstNAme = scanner.nextLine();
+        String firstName = scanner.nextLine();
         System.out.print("Введите lastName: ");
         String lastName = scanner.nextLine();
-        writer.setFirstName(firstNAme);
-        writer.setLastName(lastName);
+        writer.setFirstname(firstName);
+        writer.setLastname(lastName);
         writerController.updatedWriterById(numberId, writer);
     }
 
